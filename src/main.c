@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
 }
 
 void show_help(const char *program_name) {
-	printf("Usage: %s [-t cipher] [-k key] [-v verbose] [-l list "
+	printf("Usage: %s [-t cipher] [-d decode] [-k key] [-v verbose] [-l list "
 		   "ciphers] [-h help]\n",
 		   program_name);
 }
