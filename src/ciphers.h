@@ -9,6 +9,7 @@ extern cipher_entry cipher_table[];
 	X(caesar, 1)                                                               \
 	X(rot13, 0)                                                                \
 	X(atbash, 0)                                                               \
+	X(autokey, 1)                                                              \
 	X(vigenere, 1)                                                             \
 	X(beaufort, 1)                                                             \
 	X(railfence, 1)
