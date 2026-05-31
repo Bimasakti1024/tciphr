@@ -58,3 +58,25 @@ void repeated_char_out(char c, int l) {
 	free(r);
 	return;
 }
+
+char **split_chunk(const char *str, int chunk_size, int chunkc) {
+	char **buffer = calloc(chunkc, sizeof(char *));
+	if (!buffer)
+		return NULL;
+
+	int len = strlen(str);
+	int chunkp = 0;
+	for (int i = 0; i < len; i += chunk_size) {
+		int size = (len - i < chunk_size) ? len - i : chunk_size;
+
+		// Initiate chunk
+		buffer[chunkp] = calloc(chunk_size + 1, sizeof(char));
+
+		memcpy(buffer[chunkp], str + i, size);
+
+		buffer[chunkp][size] = '\0';
+		chunkp++;
+	}
+
+	return buffer;
+}

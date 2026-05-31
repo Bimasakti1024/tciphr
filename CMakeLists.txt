@@ -21,3 +21,5 @@ target_compile_options(tciphr PRIVATE
 target_link_libraries(tciphr PRIVATE
     $<$<CONFIG:Debug>:-fsanitize=address>
 )
+
+target_link_libraries(tciphr PRIVATE m)
