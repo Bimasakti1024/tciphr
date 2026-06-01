@@ -7,13 +7,15 @@ typedef struct {
 	int verbose;
 } cipher_data;
 
-typedef void (*cipher_fn)(cipher_data *);
+typedef char *(*cipher_fn)(cipher_data *);
 
 typedef struct {
 	char *name;
+	int require_key;
+	int has_crack;
 	cipher_fn encode;
 	cipher_fn decode;
-	int require_key;
+	cipher_fn crack;
 } cipher_entry;
 
 #endif

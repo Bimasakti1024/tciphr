@@ -8,18 +8,18 @@
 
 static int verbose = 0;
 
-void beaufort(cipher_data *data) {
+char *beaufort(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
 		printf("Failed to allocate buffer\n");
-		return;
+		return NULL;
 	}
 
 	if (search_non_alpha(data->key)) {
 		printf("Key contains a non alphabetic character\n");
 		free(buffer);
-		return;
+		return NULL;
 	}
 
 	size_t key_len = strlen(data->key);
@@ -51,10 +51,8 @@ void beaufort(cipher_data *data) {
 		buffer[i] = c;
 	}
 
-	puts(buffer);
-	free(buffer);
-	return;
+	return buffer;
 }
 
-void beaufort_encode(cipher_data *data) { beaufort(data); }
-void beaufort_decode(cipher_data *data) { beaufort(data); }
+char *beaufort_encode(cipher_data *data) { return beaufort(data); }
+char *beaufort_decode(cipher_data *data) { return beaufort(data); }

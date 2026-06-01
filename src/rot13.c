@@ -3,17 +3,16 @@
 #include "util.h"
 #include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 static int verbose = 0;
 
-void rot13(cipher_data *data) {
+char *rot13(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
 		printf("Failed to allocate buffer\n");
-		return;
+		return NULL;
 	}
 
 	for (int i = 0; buffer[i] != '\0'; i++) {
@@ -25,9 +24,8 @@ void rot13(cipher_data *data) {
 		DBG_OUT("Shifted %c to %c\n", p, c)
 	}
 
-	puts(buffer);
-	free(buffer);
+	return buffer;
 }
 
-void rot13_encode(cipher_data *data) { rot13(data); }
-void rot13_decode(cipher_data *data) { rot13(data); }
+char *rot13_encode(cipher_data *data) { return rot13(data); }
+char *rot13_decode(cipher_data *data) { return rot13(data); }

@@ -1,4 +1,5 @@
 #include "ciphers.h"
+#include "types.h"
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,14 +7,11 @@
 
 static int verbose = 0;
 
-void railfence_encode(cipher_data *data) {
+char *railfence_encode(cipher_data *data) {
 	verbose = data->verbose;
 
-	char *plaintext = strip_non_alpha(data->input);
+	char *plaintext = strdup(data->input);
 	size_t plainlen = strlen(plaintext);
-	if (strcmp(plaintext, data->input))
-		DBG_OUT("Stripped non-alphabetic characters from plaintext: %s to %s\n",
-				data->input, plaintext)
 
 	int railc = atoi(data->key);
 	if (railc <= 1) {
@@ -39,7 +37,7 @@ void railfence_encode(cipher_data *data) {
 			direction = -direction;
 	}
 
-	char output[plainlen + 1];
+	char *output = strdup(plaintext);
 	int pos = 0;
 	for (int i = 0; i < railc; i++) {
 		DBG_OUT("Rail %d: %s\n", i, rails[i])
@@ -48,22 +46,22 @@ void railfence_encode(cipher_data *data) {
 		}
 	}
 	output[pos] = '\0';
-	puts(output);
 	free(plaintext);
+
+	return output;
 }
 
-void railfence_decode(cipher_data *data) {
+char *railfence_decode(cipher_data *data) {
 	verbose = data->verbose;
 
-	char *ciphertext = strip_non_alpha(data->input);
+	char *ciphertext = strdup(data->input);
 	size_t cipherlen = strlen(ciphertext);
 	if (strcmp(ciphertext, data->input))
 		DBG_OUT(
 			"Stripped non-alphabetic characters from ciphertext: %s to %s\n",
 			data->input, ciphertext)
 
-	char plaintext[cipherlen + 1];
-	memset(plaintext, 0, sizeof(plaintext));
+	char *plaintext = strdup(ciphertext);
 
 	int railc = atoi(data->key);
 	if (railc <= 1) {
@@ -122,7 +120,28 @@ void railfence_decode(cipher_data *data) {
 		if (rail == 0 || rail == railc - 1)
 			direction = -direction;
 	}
-	puts(plaintext);
 
 	free(ciphertext);
+
+	return plaintext;
+}
+
+char *railfence_crack(cipher_data *data) {
+	int len = strlen(data->input);
+	int digitc = count_digits(len);
+
+	data->key = calloc(1, digitc + 1);
+
+	for (int i = 2; i <= len; i++) {
+		snprintf(data->key, digitc + 1, "%d", i);
+
+		char *buffer = railfence_decode(data);
+
+		printf("%-*d Rail: %s\n", digitc, i, buffer);
+
+		free(buffer);
+	}
+
+	free(data->key);
+	return NULL;
 }

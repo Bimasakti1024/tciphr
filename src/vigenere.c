@@ -8,18 +8,18 @@
 
 static int verbose = 0;
 
-void vigenere_shift(cipher_data *data, int encrypt) {
+char *vigenere_shift(cipher_data *data, int encrypt) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
 		printf("Failed to allocate buffer\n");
-		return;
+		return NULL;
 	}
 
 	if (search_non_alpha(data->key)) {
 		printf("Key contains a non alphabetic character\n");
 		free(buffer);
-		return;
+		return NULL;
 	}
 
 	size_t key_len = strlen(data->key);
@@ -37,10 +37,9 @@ void vigenere_shift(cipher_data *data, int encrypt) {
 		}
 		buffer[i] = c;
 	}
-	puts(buffer);
-	free(buffer);
+
+	return buffer;
 }
 
-void vigenere_encode(cipher_data *data) { vigenere_shift(data, 1); }
-
-void vigenere_decode(cipher_data *data) { vigenere_shift(data, -1); }
+char *vigenere_encode(cipher_data *data) { return vigenere_shift(data, 1); }
+char *vigenere_decode(cipher_data *data) { return vigenere_shift(data, -1); }

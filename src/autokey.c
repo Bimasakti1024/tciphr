@@ -8,12 +8,12 @@
 
 static int verbose = 0;
 
-void autokey_encode(cipher_data *data) {
+char *autokey_encode(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
 		printf("Failed to allocate buffer\n");
-		return;
+		return NULL;
 	}
 	int plainlen = strlen(buffer);
 	int keylen = strlen(data->key);
@@ -43,16 +43,16 @@ void autokey_encode(cipher_data *data) {
 		DBG_OUT("Shifted %c with key %c to %c\n", buffer[i], keystream[i], c)
 		buffer[i] = c;
 	}
-	puts(buffer);
-	free(buffer);
+
+	return buffer;
 }
 
-void autokey_decode(cipher_data *data) {
+char *autokey_decode(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
 		printf("Failed to allocate key\n");
-		return;
+		return NULL;
 	}
 
 	int cipherlen = strlen(buffer);
@@ -65,7 +65,7 @@ void autokey_decode(cipher_data *data) {
 	if (chunk == NULL) {
 		printf("Failed to allocate chunks\n");
 		free(buffer);
-		return;
+		return NULL;
 	}
 
 	// Decode each chunk
@@ -86,11 +86,10 @@ void autokey_decode(cipher_data *data) {
 		}
 	}
 
-	puts(buffer);
-	free(buffer);
 	free(key);
 
 	for (int i = 0; i < chunkc; i++)
 		free(chunk[i]);
 	free(chunk);
+	return buffer;
 }

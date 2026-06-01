@@ -22,19 +22,6 @@ int search_non_alpha(const char *str) {
 	return c;
 }
 
-char *strip_non_alpha(const char *str) {
-	int len = strlen(str);
-	char *stripped = malloc(len + 1);
-	int j = 0;
-	for (int i = 0; i < len; i++) {
-		if (isalpha(str[i])) {
-			stripped[j++] = str[i];
-		}
-	}
-	stripped[j] = '\0';
-	return stripped;
-}
-
 char *repeated_char(char c, int l) {
 	if (l <= 0)
 		return strdup("");
@@ -79,4 +66,17 @@ char **split_chunk(const char *str, int chunk_size, int chunkc) {
 	}
 
 	return buffer;
+}
+
+int count_digits(long long n) {
+	int count = 0;
+
+	n = llabs(n);
+
+	do {
+		n /= 10;
+		count++;
+	} while (n != 0);
+
+	return count;
 }

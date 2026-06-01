@@ -2,9 +2,20 @@
 #include <stdio.h>
 #include <string.h>
 
-#define X(name, require_key) {#name, name##_encode, name##_decode, require_key},
-cipher_entry cipher_table[] = {CIPHER_LIST{NULL, NULL, NULL, 0}};
+#define DEFINE_CRACK_PTR_1(name) name##_crack
+#define DEFINE_CRACK_PTR_0(name) NULL
+#define EVAL_CRACK_PTR(macro, name) macro(name)
+
+#define X(name, require_key, has_crack)                                        \
+	{#name,			require_key,                                               \
+	 has_crack,		name##_encode,                                             \
+	 name##_decode, EVAL_CRACK_PTR(DEFINE_CRACK_PTR_##has_crack, name)},
+
+cipher_entry cipher_table[] = {CIPHER_LIST{NULL, 0, 0, NULL, NULL, NULL}};
 #undef X
+#undef DEFINE_CRACK_PTR_1
+#undef DEFINE_CRACK_PTR_0
+#undef EVAL_CRACK_PTR
 
 cipher_entry *find_cipher(const char *name) {
 	if (!name)

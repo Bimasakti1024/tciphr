@@ -14,9 +14,11 @@ int main(int argc, char **argv) {
 	char *key = NULL;
 	int verbose = 0;
 	int decode = 0;
+	int crack = 0;
 	char *cipher;
+	char *buffer;
 
-	while ((opt = getopt(argc, argv, "c:k:dvlh")) != -1) {
+	while ((opt = getopt(argc, argv, "c:k:dvlCh")) != -1) {
 		switch (opt) {
 		case 'c': {
 			cipher = strdup(optarg);
@@ -41,9 +43,13 @@ int main(int argc, char **argv) {
 			list_ciphers();
 			exit(EXIT_FAILURE);
 		}
+		case 'C': {
+			crack = 1;
+			break;
+		}
 		case 'h': {
 			show_help(argv[0]);
-			break;
+			exit(EXIT_SUCCESS);
 		}
 		case '?': {
 			show_help(argv[0]);
@@ -94,22 +100,33 @@ int main(int argc, char **argv) {
 		cipher_entry *entry = find_cipher(cipher);
 
 		if (entry) {
-			if (entry->require_key && !data.key) {
+			if ((entry->require_key && !data.key) && !crack) {
 				printf("Key is required\n");
 			} else {
-				if (decode)
-					entry->decode(&data);
-				else
-					entry->encode(&data);
+				if (decode) {
+					buffer = entry->decode(&data);
+				} else if (crack) {
+					if (entry->crack) {
+						buffer = entry->crack(&data);
+					} else {
+						printf("Cracking for %s is not supported\n", cipher);
+					}
+				} else
+					buffer = entry->encode(&data);
 			}
 		} else if (!entry) {
 			printf("Cipher %s not found\n", cipher);
 		}
 	} else {
-		if (decode)
+		if (decode || crack)
 			printf("No ciphertext were given\n");
 		else
 			printf("No plaintext were given\n");
+	}
+
+	if (buffer) {
+		puts(buffer);
+		free(buffer);
 	}
 
 	free(cipher);
@@ -118,7 +135,14 @@ int main(int argc, char **argv) {
 }
 
 void show_help(const char *program_name) {
-	printf("Usage: %s [-t cipher] [-d decode] [-k key] [-v verbose] [-l list "
-		   "ciphers] [-h help]\n",
+	printf("Usage: %s -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-h]\n\n",
 		   program_name);
+	printf("Options:\n");
+	printf("  -c <cipher>   Specify the cipher algorithm to use\n");
+	printf("  -k <key>      Provide the key for encryption or decryption\n");
+	printf("  -d            Decode ciphertext\n");
+	printf("  -C            Attempt to crack a ciphertext\n");
+	printf("  -v            Enable verbose debugging output\n");
+	printf("  -l            List all available ciphers supported by tciphr\n");
+	printf("  -h            Display this help menu and exit\n");
 }

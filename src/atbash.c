@@ -3,17 +3,16 @@
 #include "util.h"
 #include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 static int verbose = 0;
 
-void atbash(cipher_data *data) {
+char *atbash(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
 		printf("Failed to allocate buffer\n");
-		return;
+		return NULL;
 	}
 
 	for (int i = 0; buffer[i] != '\0'; i++) {
@@ -29,9 +28,8 @@ void atbash(cipher_data *data) {
 		buffer[i] = c;
 	}
 
-	puts(buffer);
-	free(buffer);
+	return buffer;
 }
 
-void atbash_encode(cipher_data *data) { atbash(data); }
-void atbash_decode(cipher_data *data) { atbash(data); }
+char *atbash_encode(cipher_data *data) { return atbash(data); }
+char *atbash_decode(cipher_data *data) { return atbash(data); }
