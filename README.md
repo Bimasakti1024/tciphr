@@ -4,7 +4,7 @@
 
 ## Usage
 
-Usage: tciphr [-c cipher] [-k key] [-d decode] [-v verbose] [-l list ciphers] [-h help]
+Usage: tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-h]
 
 `tciphr` operates as pipeline filter, It read text from `stdin` and output them to `stdout`.
 
@@ -34,12 +34,12 @@ $ cat message.txt | tciphr -c rot13 > encoded.txt
 
 ### Supported ciphers
 
-| Cipher | Category                    | Key requirement |
-| :-------| :----------------------------| :----------------|
-| Caesar | Monoalphabetic Substitution | Integer         |
-| rot13  | Monoalphabetic Substitution | None            |
-| atbash | Monoalphabetic Substitution | None            |
-| autokey | Monoalphabetic Substitution | String |
+| Cipher    | Category                    | Key requirement     |
+| :----------| :----------------------------| :--------------------|
+| Caesar    | Monoalphabetic Substitution | Integer             |
+| rot13     | Monoalphabetic Substitution | None                |
+| atbash    | Monoalphabetic Substitution | None                |
+| autokey   | Monoalphabetic Substitution | String              |
 | Vigenere  | Polyalphabetic Substitution | String              |
 | beaufort  | Polyalphabetic Substitution | String              |
 | railfence | Transposition               | Integer (must >= 2) |
@@ -49,6 +49,7 @@ $ cat message.txt | tciphr -c rot13 > encoded.txt
 - Lightweight and Fast: Written in Pure C with zero external heavy dependecies.
 - Stream-oriented design: Read from `stdin` with zero interactive prompt, Allowing seamless integration with other tools like `grep` or `awk`.
 - Case-insensitive cipher names: Parameters like `-c Caesar` and `-c caesar` are processed identically.
+- Brute-force and Dictionary attack for some ciphers.
 
 ## License
 
