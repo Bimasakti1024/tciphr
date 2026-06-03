@@ -4,6 +4,7 @@
 typedef struct {
 	char *input;
 	char *key;
+	char **crack_parameter;
 	int verbose;
 } cipher_data;
 

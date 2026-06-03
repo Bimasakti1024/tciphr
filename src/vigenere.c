@@ -28,8 +28,7 @@ char *vigenere_shift(cipher_data *data, int encrypt) {
 		char c = data->input[i];
 		if (isalpha(c)) {
 			int shift = tolower(data->key[WRAP(key_pos, key_len)]) - 'a';
-			c = shift_char(c,
-						   encrypt * shift); //  multiply to toggle encryption
+			c = shift_char(c, encrypt * shift);
 			key_pos++;
 			DBG_OUT("Shifted %c with key %c to %c\n", data->input[i], c, shift)
 		} else {

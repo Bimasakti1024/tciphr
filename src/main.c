@@ -6,19 +6,26 @@
 #include <string.h>
 #include <unistd.h>
 
+#define PARAMETER_ARRAY_SIZE 32
+
 void show_help(const char *program_name);
 
 int main(int argc, char **argv) {
 	// Read flag arguments
 	int opt;
 	char *key = NULL;
+
 	int verbose = 0;
 	int decode = 0;
 	int crack = 0;
+
 	char *cipher;
 	char *buffer;
 
-	while ((opt = getopt(argc, argv, "c:k:dvlCh")) != -1) {
+	char **parameter = NULL;
+	int parameterp = 0;
+
+	while ((opt = getopt(argc, argv, "c:k:dvlCp:h")) != -1) {
 		switch (opt) {
 		case 'c': {
 			cipher = strdup(optarg);
@@ -45,6 +52,18 @@ int main(int argc, char **argv) {
 		}
 		case 'C': {
 			crack = 1;
+			break;
+		}
+		case 'p': {
+			if (!parameter) {
+				parameter = malloc(PARAMETER_ARRAY_SIZE * sizeof(char *));
+				if (!parameter) {
+					printf("Failed to allocate for parameter\n");
+					exit(EXIT_FAILURE);
+				}
+			}
+			parameter[parameterp] = strdup(optarg);
+			parameterp++;
 			break;
 		}
 		case 'h': {
@@ -91,6 +110,7 @@ int main(int argc, char **argv) {
 	cipher_data data = {
 		.input = input,
 		.key = key,
+		.crack_parameter = parameter,
 		.verbose = verbose,
 	};
 
@@ -131,11 +151,16 @@ int main(int argc, char **argv) {
 
 	free(cipher);
 	free(input);
+
+	for (int i = 0; i < parameterp; i++) {
+		free(parameter[i]);
+	}
+	free(parameter);
 	return 0;
 }
 
 void show_help(const char *program_name) {
-	printf("Usage: %s -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-h]\n\n",
+	printf("Usage: %s -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]\n\n",
 		   program_name);
 	printf("Options:\n");
 	printf("  -c <cipher>   Specify the cipher algorithm to use\n");
@@ -144,5 +169,6 @@ void show_help(const char *program_name) {
 	printf("  -C            Attempt to crack a ciphertext\n");
 	printf("  -v            Enable verbose debugging output\n");
 	printf("  -l            List all available ciphers supported by tciphr\n");
+	printf("  -p			Set parameter for cracking\n");
 	printf("  -h            Display this help menu and exit\n");
 }
