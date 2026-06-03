@@ -2,9 +2,12 @@
 
 `tciphr` is a lightweight command-line interface to process text using historical cryptographic algorithms. It allows people like CTF player to process text through classic ciphers right from the terminal.
 
+## Security Notice
+This tool implement historical cryptographic algorithm which does not adhere to modern security standards.
+
 ## Usage
 
-Usage: tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-h]
+Usage: tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]
 
 `tciphr` operates as pipeline filter, It read text from `stdin` and output them to `stdout`.
 
