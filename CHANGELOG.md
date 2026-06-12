@@ -5,7 +5,7 @@ All notable changelog are documented in this file.
 ## [UNRELEASED]
 ### Added
 - Cracking mode for railfence and caesar cipher
-- Dictionary and Brute force attack for vigenere, autokey, and beaufort (WIP)
+- Dictionary attack for vigenere, autokey, and beaufort (WIP)
 
 ### Changed
 - Refactored `cipher_fn` from using `void` to `char *`
