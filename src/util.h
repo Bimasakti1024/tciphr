@@ -1,6 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stdio.h>
+
 #define WRAP(x, n) (((x) % (n) + (n)) % (n))
 #define DBG_OUT(msg, ...)                                                      \
 	if (verbose)                                                               \
@@ -12,5 +14,6 @@ char *repeated_char(char c, int l);
 void repeated_char_out(char c, int l);
 char **split_chunk(const char *str, int chunk_size, int chunkc);
 int count_digits(long long n);
+char *readline_file(FILE *f);
 
 #endif

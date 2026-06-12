@@ -1,5 +1,6 @@
 #include "util.h"
 #include <ctype.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -79,4 +80,33 @@ int count_digits(long long n) {
 	} while (n != 0);
 
 	return count;
+}
+
+char *readline_file(FILE *f) {
+	size_t len = 0, cap = 128;
+	char *buf = malloc(cap);
+	if (!buf)
+		return NULL;
+
+	char c;
+	while ((c = fgetc(f)) != EOF && c != '\n') {
+		if (len + 1 >= cap) {
+			cap *= 2;
+			char *tmp = realloc(buf, cap);
+			if (!tmp) {
+				free(buf);
+				return NULL;
+			}
+			buf = tmp;
+		}
+		buf[len++] = c;
+	}
+
+	if (len == 0 || c == EOF) {
+		free(buf);
+		return NULL;
+	}
+
+	buf[len] = '\0';
+	return buf;
 }
