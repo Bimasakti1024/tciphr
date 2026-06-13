@@ -9,9 +9,9 @@ extern cipher_entry cipher_table[];
 	X(caesar, 1, 1)                                                            \
 	X(rot13, 0, 0)                                                             \
 	X(atbash, 0, 0)                                                            \
-	X(autokey, 1, 0)                                                           \
+	X(autokey, 1, 1)                                                           \
 	X(vigenere, 1, 1)                                                          \
-	X(beaufort, 1, 0)                                                          \
+	X(beaufort, 1, 1)                                                          \
 	X(railfence, 1, 1)
 
 #define DECLARE_CRACK_1(name) char *name##_crack(cipher_data *data);

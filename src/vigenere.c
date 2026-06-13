@@ -44,19 +44,19 @@ char *vigenere_encode(cipher_data *data) { return vigenere_shift(data, 1); }
 char *vigenere_decode(cipher_data *data) { return vigenere_shift(data, -1); }
 
 char *vigenere_crack(cipher_data *data) {
-	char *dictionary = data->crack_parameter[0];
-	if (!dictionary) {
-		printf("Dictionary path not provided\n");
+	char *wordlist = data->crack_parameter[0];
+	if (!wordlist) {
+		printf("Wordlist path not provided\n");
 		return NULL;
 	}
-	FILE *dict_p = fopen(dictionary, "r");
-	if (!dict_p) {
+	FILE *wordlist_p = fopen(wordlist, "r");
+	if (!wordlist_p) {
 		printf("Failed to open file\n");
 		return NULL;
 	}
 
 	char *line;
-	while ((line = readline_file(dict_p)) != NULL) {
+	while ((line = readline_file(wordlist_p)) != NULL) {
 		line[strlen(line)] = '\0';
 		data->key = line;
 		char *plaintext = vigenere_decode(data);
@@ -66,6 +66,6 @@ char *vigenere_crack(cipher_data *data) {
 		free(line);
 	}
 
-	fclose(dict_p);
+	fclose(wordlist_p);
 	return NULL;
 }
