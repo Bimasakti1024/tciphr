@@ -2,7 +2,7 @@
 
 All notable changelog are documented in this file.
 
-## [UNRELEASED]
+## [0.3.0] - 13-06-2026
 ### Added
 - Cracking mode for railfence and caesar cipher
 - Dictionary attack for vigenere, autokey, and beaufort
