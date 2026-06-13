@@ -22,7 +22,11 @@ cmake --build build
 
 ## Usage
 
-> tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]
+```
+tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]
+```
+
+### Flags
 
 | Flag        | Description        |
 | -------------| --------------------|
