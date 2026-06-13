@@ -1,6 +1,6 @@
+#include "../types.h"
+#include "../util.h"
 #include "ciphers.h"
-#include "types.h"
-#include "util.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

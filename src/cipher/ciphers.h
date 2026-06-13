@@ -1,6 +1,6 @@
 #ifndef CIPHERS_H
 #define CIPHERS_H
-#include "types.h"
+#include "../types.h"
 
 extern cipher_entry cipher_table[];
 

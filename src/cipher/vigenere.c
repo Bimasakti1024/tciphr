@@ -1,6 +1,6 @@
+#include "../types.h"
+#include "../util.h"
 #include "ciphers.h"
-#include "types.h"
-#include "util.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,30 +42,3 @@ char *vigenere_shift(cipher_data *data, int encrypt) {
 
 char *vigenere_encode(cipher_data *data) { return vigenere_shift(data, 1); }
 char *vigenere_decode(cipher_data *data) { return vigenere_shift(data, -1); }
-
-char *vigenere_crack(cipher_data *data) {
-	char *wordlist = data->crack_parameter[0];
-	if (!wordlist) {
-		printf("Wordlist path not provided\n");
-		return NULL;
-	}
-	FILE *wordlist_p = fopen(wordlist, "r");
-	if (!wordlist_p) {
-		printf("Failed to open file\n");
-		return NULL;
-	}
-
-	char *line;
-	while ((line = readline_file(wordlist_p)) != NULL) {
-		line[strlen(line)] = '\0';
-		data->key = line;
-		char *plaintext = vigenere_decode(data);
-		if (plaintext)
-			printf("Cipherkey %s: %s\n", line, plaintext);
-		free(plaintext);
-		free(line);
-	}
-
-	fclose(wordlist_p);
-	return NULL;
-}
