@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(tciphr C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_EXTENSIONS ON)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to 'Release' as none was specified.")
