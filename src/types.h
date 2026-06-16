@@ -2,9 +2,15 @@
 #define TYPES_H
 
 typedef struct {
+	char strategy[32];
+	char *wordlist;
+	int gram;
+} crack_param;
+
+typedef struct {
 	char *input;
 	char *key;
-	char **crack_parameter;
+	crack_param *crack_parameter;
 	int verbose;
 } cipher_data;
 

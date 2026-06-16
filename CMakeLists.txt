@@ -13,6 +13,7 @@ endif()
 add_executable(tciphr
     src/main.c
     src/util.c
+    src/crack_param.c
 
     src/cipher/ciphers.c
 

@@ -5,7 +5,7 @@
 #include <string.h>
 
 char *autokey_crack(cipher_data *data) {
-	char *wordlist = data->crack_parameter[0];
+	char *wordlist = data->crack_parameter->wordlist;
 	if (!wordlist) {
 		printf("Wordlist path not provided\n");
 		return NULL;
