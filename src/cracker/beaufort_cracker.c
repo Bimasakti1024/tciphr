@@ -8,12 +8,12 @@
 char *beaufort_crack(cipher_data *data) {
 	char *wordlist = data->crack_parameter->wordlist;
 	if (!wordlist) {
-		printf("Wordlist path not provided\n");
+		fprintf(stderr, "Wordlist path not provided\n");
 		return NULL;
 	}
 	FILE *wordlist_p = fopen(wordlist, "r");
 	if (!wordlist_p) {
-		printf("Failed to open file\n");
+		fprintf(stderr, "Failed to open file\n");
 		return NULL;
 	}
 

@@ -11,7 +11,7 @@ char *caesar_shift(cipher_data *data, int shift) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 	for (int i = 0; data->input[i] != '\0'; i++) {

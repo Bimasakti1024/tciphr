@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
 
 		if (entry) {
 			if ((entry->require_key && !data.key) && !crack) {
-				printf("Key is required\n");
+				fprintf(stderr, "Key is required\n");
 			} else {
 				if (decode) {
 					buffer = entry->decode(&data);
@@ -121,19 +121,20 @@ int main(int argc, char **argv) {
 					if (entry->crack) {
 						buffer = entry->crack(&data);
 					} else {
-						printf("Cracking for %s is not supported\n", cipher);
+						fprintf(stderr, "Cracking for %s is not supported\n",
+								cipher);
 					}
 				} else
 					buffer = entry->encode(&data);
 			}
 		} else if (!entry) {
-			printf("Cipher %s not found\n", cipher);
+			fprintf(stderr, "Cipher %s not found\n", cipher);
 		}
 	} else {
 		if (decode || crack)
-			printf("No ciphertext were given\n");
+			fprintf(stderr, "No ciphertext were given\n");
 		else
-			printf("No plaintext were given\n");
+			fprintf(stderr, "No plaintext were given\n");
 	}
 
 	if (buffer) {

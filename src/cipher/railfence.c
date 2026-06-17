@@ -15,7 +15,7 @@ char *railfence_encode(cipher_data *data) {
 
 	int railc = atoi(data->key);
 	if (railc <= 1) {
-		printf("Rail count must at least be 2\n");
+		fprintf(stderr, "Rail count must at least be 2\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -65,7 +65,7 @@ char *railfence_decode(cipher_data *data) {
 
 	int railc = atoi(data->key);
 	if (railc <= 1) {
-		printf("Rail count must at least be 2\n");
+		fprintf(stderr, "Rail count must at least be 2\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -91,7 +91,7 @@ char *railfence_decode(cipher_data *data) {
 
 	if (verbose) {
 		for (int i = 0; i < railc; i++) {
-			printf("Rail %d character count: %d\n", i, railchc[i]);
+			fprintf(stderr, "Rail %d character count: %d\n", i, railchc[i]);
 		}
 	}
 

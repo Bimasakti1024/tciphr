@@ -11,7 +11,7 @@ char *atbash(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 

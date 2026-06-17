@@ -7,12 +7,12 @@
 char *autokey_crack(cipher_data *data) {
 	char *wordlist = data->crack_parameter->wordlist;
 	if (!wordlist) {
-		printf("Wordlist path not provided\n");
+		fprintf(stderr, "Wordlist path not provided\n");
 		return NULL;
 	}
 	FILE *wordlist_p = fopen(wordlist, "r");
 	if (!wordlist_p) {
-		printf("Failed to open file\n");
+		fprintf(stderr, "Failed to open file\n");
 		return NULL;
 	}
 
@@ -22,7 +22,7 @@ char *autokey_crack(cipher_data *data) {
 		data->key = line;
 		char *plaintext = autokey_decode(data);
 		if (plaintext)
-			printf("Cipherkey %s: %s\n", line, plaintext);
+			printf(stderr, "Cipherkey %s: %s\n", line, plaintext);
 		free(plaintext);
 		free(line);
 	}

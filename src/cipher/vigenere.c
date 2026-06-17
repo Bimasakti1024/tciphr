@@ -12,12 +12,12 @@ char *vigenere_shift(cipher_data *data, int encrypt) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 
 	if (search_non_alpha(data->key)) {
-		printf("Key contains a non alphabetic character\n");
+		fprintf(stderr, "Key contains a non alphabetic character\n");
 		free(buffer);
 		return NULL;
 	}

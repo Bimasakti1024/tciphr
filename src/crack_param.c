@@ -1,5 +1,4 @@
 #include "crack_param.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -23,8 +22,6 @@ void parse_crack_param(crack_param *crack_parameter, char *str) {
 			if (*val == '\0') {
 				continue;
 			}
-
-			printf("%s=%s\n", key, val);
 
 			MAP_KV(key, "strategy") {
 				strncpy(crack_parameter->strategy, val,

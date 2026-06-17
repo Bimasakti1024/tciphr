@@ -12,7 +12,7 @@ char *autokey_encode(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 	int plainlen = strlen(buffer);
@@ -51,7 +51,7 @@ char *autokey_decode(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate key\n");
+		fprintf(stderr, "Failed to allocate key\n");
 		return NULL;
 	}
 
@@ -63,7 +63,7 @@ char *autokey_decode(cipher_data *data) {
 	int chunk_size = keylen + 1;
 	char **chunk = split_chunk(buffer, chunk_size, chunkc);
 	if (chunk == NULL) {
-		printf("Failed to allocate chunks\n");
+		fprintf(stderr, "Failed to allocate chunks\n");
 		free(buffer);
 		return NULL;
 	}
