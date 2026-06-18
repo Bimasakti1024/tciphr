@@ -22,7 +22,7 @@ char *autokey_crack(cipher_data *data) {
 		data->key = line;
 		char *plaintext = autokey_decode(data);
 		if (plaintext)
-			printf(stderr, "Cipherkey %s: %s\n", line, plaintext);
+			printf("Cipherkey %s: %s\n", line, plaintext);
 		free(plaintext);
 		free(line);
 	}
