@@ -23,6 +23,19 @@ int search_non_alpha(const char *str) {
 	return c;
 }
 
+char *strip_non_alpha(const char *str) {
+	int p = 0;
+	char *s = strdup(str);
+	memset(s, 0, strlen(s));
+
+	for (int i = 0; i < strlen(str); i++) {
+		if (isalpha(str[i])) {
+			s[p++] = str[i];
+		}
+	}
+	return s;
+}
+
 char *repeated_char(char c, int l) {
 	if (l <= 0)
 		return strdup("");

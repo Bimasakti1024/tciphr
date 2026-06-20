@@ -1,7 +1,7 @@
 #include "../cipher/ciphers.h"
+#include "../kasiski.h"
 #include "../types.h"
 #include "../util.h"
-#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -53,4 +53,15 @@ char *vigenere_dictionary(cipher_data *data) {
 	return NULL;
 }
 
-char *vigenere_kasiski(cipher_data *data) { return NULL; }
+char *vigenere_kasiski(cipher_data *data) {
+	kasiski_pattern **kp =
+		find_kasiski_pattern(data->input, data->crack_parameter->gram);
+
+	for (int i = 0; kp[i] != NULL; i++) {
+		printf("%s %d\n", kp[i]->pattern, kp[i]->occurences);
+		free_kasisiki_pattern(kp[i]);
+	}
+
+	free(kp);
+	return NULL;
+}
