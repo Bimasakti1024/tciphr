@@ -2,6 +2,10 @@
 
 All notable changelog are documented in this file.
 
+## [UNRELEASED]
+### Added
+- Kasiski examination strategy for vigenere cipher
+
 ## [0.3.0] - 13-06-2026
 ### Added
 - Cracking mode for railfence and caesar cipher
