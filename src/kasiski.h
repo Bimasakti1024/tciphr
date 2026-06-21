@@ -10,6 +10,6 @@ typedef struct {
 } kasiski_pattern;
 
 kasiski_pattern **find_kasiski_pattern(const char *ciphertext, int gram);
-void free_kasisiki_pattern(kasiski_pattern *kp);
+void free_kasiski_pattern(kasiski_pattern *kp);
 
 #endif

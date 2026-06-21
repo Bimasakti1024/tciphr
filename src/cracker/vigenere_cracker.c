@@ -2,15 +2,17 @@
 #include "../kasiski.h"
 #include "../types.h"
 #include "../util.h"
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+static int verbose = 0;
 
 char *vigenere_dictionary(cipher_data *data);
 char *vigenere_kasiski(cipher_data *data);
 
 char *vigenere_crack(cipher_data *data) {
+	verbose = data->verbose;
 	char *strategy = data->crack_parameter->strategy;
 	int strat_empty = strlen(strategy) == 0;
 
@@ -58,21 +60,30 @@ char *vigenere_kasiski(cipher_data *data) {
 	kasiski_pattern **kp =
 		find_kasiski_pattern(data->input, data->crack_parameter->gram);
 
+	int result = 0;
 	for (int i = 0; kp[i] != NULL; i++) {
-		printf("%s occurence: %d position: ", kp[i]->pattern,
-			   kp[i]->occurences);
+		if (kp[i]->occurences < 2) {
+			free_kasiski_pattern(kp[i]);
+			continue;
+		}
+
+		DBG_OUT("pattern: %s occurence: %d position: ", kp[i]->pattern,
+				kp[i]->occurences);
 
 		for (int j = 0; j < kp[i]->occurences; j++)
-			printf("%d ", kp[i]->positions[j]);
+			DBG_OUT("%d ", kp[i]->positions[j]);
 
-		printf("spacing: ");
-		for (int j = 0; j < kp[i]->occurences - 1; j++)
-			printf("%d ", kp[i]->spacings[j]);
+		DBG_OUT("spacing: ");
+		for (int j = 0; j < kp[i]->occurences - 1; j++) {
+			DBG_OUT("%d ", kp[i]->spacings[j]);
+			result = gcd(result, kp[i]->spacings[j]);
+		}
 
-		printf("\n");
-		free_kasisiki_pattern(kp[i]);
+		DBG_OUT("\n");
+		free_kasiski_pattern(kp[i]);
 	}
 
+	DBG_OUT("Predicted key length: %d\n", result);
 	free(kp);
 	return NULL;
 }

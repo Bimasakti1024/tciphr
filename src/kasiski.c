@@ -64,7 +64,7 @@ kasiski_pattern **find_kasiski_pattern(const char *ciphertext, int gram) {
 	return kp;
 }
 
-void free_kasisiki_pattern(kasiski_pattern *kp) {
+void free_kasiski_pattern(kasiski_pattern *kp) {
 	free(kp->pattern);
 	free(kp->positions);
 	free(kp->spacings);
