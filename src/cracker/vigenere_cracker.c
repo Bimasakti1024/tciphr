@@ -2,6 +2,7 @@
 #include "../kasiski.h"
 #include "../types.h"
 #include "../util.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +59,17 @@ char *vigenere_kasiski(cipher_data *data) {
 		find_kasiski_pattern(data->input, data->crack_parameter->gram);
 
 	for (int i = 0; kp[i] != NULL; i++) {
-		printf("%s %d\n", kp[i]->pattern, kp[i]->occurences);
+		printf("%s occurence: %d position: ", kp[i]->pattern,
+			   kp[i]->occurences);
+
+		for (int j = 0; j < kp[i]->occurences; j++)
+			printf("%d ", kp[i]->positions[j]);
+
+		printf("spacing: ");
+		for (int j = 0; j < kp[i]->occurences - 1; j++)
+			printf("%d ", kp[i]->spacings[j]);
+
+		printf("\n");
 		free_kasisiki_pattern(kp[i]);
 	}
 

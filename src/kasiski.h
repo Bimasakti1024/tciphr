@@ -4,8 +4,8 @@
 typedef struct {
 	char *pattern;
 	int *positions;
+	int *spacings;
 	int pos_p;
-	int capacity;
 	int occurences;
 } kasiski_pattern;
 
