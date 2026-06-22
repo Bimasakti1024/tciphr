@@ -132,13 +132,3 @@ int gcd(int a, int b) {
 	}
 	return a;
 }
-
-int find_char_occurence(const char *s, char c) {
-	int o = 0;
-
-	for (int i = 0; s[i] != '\0'; i++) {
-		if (s[i] == c)
-			o++;
-	}
-	return o;
-}

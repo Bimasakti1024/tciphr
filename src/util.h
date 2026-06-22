@@ -17,6 +17,5 @@ char **split_chunk(const char *str, int chunk_size, int chunkc);
 int count_digits(long long n);
 char *readline_file(FILE *f);
 int gcd(int a, int b);
-int find_char_occurence(const char *s, char c);
 
 #endif
