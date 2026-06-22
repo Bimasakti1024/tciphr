@@ -83,7 +83,7 @@ char *vigenere_kasiski(cipher_data *data) {
 		free_kasiski_pattern(kp[i]);
 	}
 
-	DBG_OUT("Predicted key length: %d\n", result);
+	printf("Predicted key length: %d\n", result);
 	free(kp);
 	return NULL;
 }
