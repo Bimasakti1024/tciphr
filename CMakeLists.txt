@@ -17,6 +17,7 @@ add_executable(tciphr
     src/crack_param.c
     src/cipher/ciphers.c
     src/kasiski.c
+    src/frequency.c
 
     # Monoalphabetic substitution cipher
     src/cipher/caesar.c

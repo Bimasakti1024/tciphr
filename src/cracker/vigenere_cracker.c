@@ -1,4 +1,5 @@
 #include "../cipher/ciphers.h"
+#include "../frequency.h"
 #include "../kasiski.h"
 #include "../types.h"
 #include "../util.h"
@@ -57,11 +58,14 @@ char *vigenere_dictionary(cipher_data *data) {
 }
 
 char *vigenere_kasiski(cipher_data *data) {
+	// Find kasiski pattern
 	kasiski_pattern **kp =
 		find_kasiski_pattern(data->input, data->crack_parameter->gram);
 
 	int result = 0;
 	for (int i = 0; kp[i] != NULL; i++) {
+		// Skip pattern that dont appear more than 2 times
+		// The pattern is not meaningful
 		if (kp[i]->occurences < 2) {
 			free_kasiski_pattern(kp[i]);
 			continue;
@@ -74,6 +78,8 @@ char *vigenere_kasiski(cipher_data *data) {
 			DBG_OUT("%d ", kp[i]->positions[j]);
 
 		DBG_OUT("spacing: ");
+
+		// Find GCD of each pattern
 		for (int j = 0; j < kp[i]->occurences - 1; j++) {
 			DBG_OUT("%d ", kp[i]->spacings[j]);
 			result = gcd(result, kp[i]->spacings[j]);
@@ -84,6 +90,7 @@ char *vigenere_kasiski(cipher_data *data) {
 	}
 
 	printf("Predicted key length: %d\n", result);
+	printf("Index of coincidence: %f\n", index_of_coincidence(data->input));
 	free(kp);
 	return NULL;
 }

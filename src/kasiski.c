@@ -12,7 +12,9 @@ kasiski_pattern **find_kasiski_pattern(const char *ciphertext, int gram) {
 	// Strip non alphabet before finding patterns
 	char *cleaned = strip_non_alpha(ciphertext);
 
+	// Pattern counter
 	int unique = 0;
+
 	for (int i = 0; i < strlen(cleaned) - gram + 1; i++) {
 		// Allocate pattern
 		char *pattern = malloc(sizeof(char) * (gram + 1));
@@ -24,6 +26,7 @@ kasiski_pattern **find_kasiski_pattern(const char *ciphertext, int gram) {
 		// Check if pattern already exist
 		for (int j = 0; j < unique; j++) {
 			if (strcmp(kp[j]->pattern, pattern) == 0) {
+				// Increment occurence if pattern exist
 				kp[j]->occurences++;
 				kp[j]->positions[kp[j]->pos_p] = i;
 
@@ -41,6 +44,7 @@ kasiski_pattern **find_kasiski_pattern(const char *ciphertext, int gram) {
 		}
 
 		// If does not exist, Initiate
+		// This code only runs once per pattern
 		if (!found) {
 			// Initiate
 			kp[unique] = calloc(1, sizeof(kasiski_pattern));
@@ -59,8 +63,11 @@ kasiski_pattern **find_kasiski_pattern(const char *ciphertext, int gram) {
 		free(pattern);
 	}
 
+	// Sentinel
 	kp[unique] = NULL;
+
 	free(cleaned);
+
 	return kp;
 }
 
