@@ -58,11 +58,17 @@ char *vigenere_dictionary(cipher_data *data) {
 }
 
 char *vigenere_kasiski(cipher_data *data) {
+	int max_key_len = strlen(data->input) / 3;
+	if (max_key_len > 30)
+		max_key_len = 30;
+
+	int factor[max_key_len + 1];
+	memset(factor, 0, sizeof(factor));
+
 	// Find kasiski pattern
 	kasiski_pattern **kp =
 		find_kasiski_pattern(data->input, data->crack_parameter->gram);
 
-	int result = 0;
 	for (int i = 0; kp[i] != NULL; i++) {
 		// Skip pattern that dont appear more than 2 times
 		// The pattern is not meaningful
@@ -79,17 +85,31 @@ char *vigenere_kasiski(cipher_data *data) {
 
 		DBG_OUT("spacing: ");
 
-		// Find GCD of each pattern
+		// Find factor of each pattern spacings
 		for (int j = 0; j < kp[i]->occurences - 1; j++) {
 			DBG_OUT("%d ", kp[i]->spacings[j]);
-			result = gcd(result, kp[i]->spacings[j]);
+
+			for (int f = 2; f <= max_key_len; f++) {
+				if ((kp[i]->spacings[j] % f) == 0)
+					factor[f]++;
+			}
 		}
 
 		DBG_OUT("\n");
 		free_kasiski_pattern(kp[i]);
 	}
 
-	printf("Predicted key length: %d\n", result);
+	int factor_index = 2;
+	int factor_max = 0;
+
+	for (int i = 2; i <= max_key_len; i++) {
+		if (factor[i] > factor_max) {
+			factor_max = factor[i];
+			factor_index = i;
+		}
+	}
+
+	printf("Predicted key length: %d\n", factor_index);
 	printf("Index of coincidence: %f\n", index_of_coincidence(data->input));
 	free(kp);
 	return NULL;
