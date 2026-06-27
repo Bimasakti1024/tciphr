@@ -120,16 +120,18 @@ char *vigenere_kasiski(cipher_data *data) {
 	int column_size = ceil((float)cleanlen / predicted_keylen);
 	char column[predicted_keylen][column_size + 1];
 
+	int column_freq[predicted_keylen][26];
+
 	for (int col = 0; col < predicted_keylen; col++) {
 		int idx = 0;
 		for (int i = col; i < cleanlen; i += predicted_keylen) {
 			column[col][idx++] = cleaned[i];
 		}
 		column[col][idx] = '\0';
+
+		count_frequency(column[col], column_freq[col]);
 		DBG_OUT("Chunk %d: %s\n", col, column[col])
 	}
-
-	int column_freq[predicted_keylen][26];
 
 	free(kp);
 	free(cleaned);

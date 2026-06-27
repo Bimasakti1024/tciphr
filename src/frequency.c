@@ -36,3 +36,14 @@ float index_of_coincidence(const char *s) {
 	free(cleaned);
 	return numerator / denominator;
 }
+
+void count_frequency(const char *s, int freq[26]) {
+	memset(freq, 0, 26 * sizeof(int));
+	for (int i = 0; i < strlen(s); i++) {
+		if (isalpha(s[i])) {
+			freq[tolower(s[i]) - 'a']++;
+		}
+	}
+
+	return;
+}
