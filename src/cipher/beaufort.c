@@ -1,6 +1,6 @@
+#include "../types.h"
+#include "../util.h"
 #include "ciphers.h"
-#include "types.h"
-#include "util.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,12 +12,12 @@ char *beaufort(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 
 	if (search_non_alpha(data->key)) {
-		printf("Key contains a non alphabetic character\n");
+		fprintf(stderr, "Key contains a non alphabetic character\n");
 		free(buffer);
 		return NULL;
 	}
@@ -56,30 +56,3 @@ char *beaufort(cipher_data *data) {
 
 char *beaufort_encode(cipher_data *data) { return beaufort(data); }
 char *beaufort_decode(cipher_data *data) { return beaufort(data); }
-
-char *beaufort_crack(cipher_data *data) {
-	char *wordlist = data->crack_parameter[0];
-	if (!wordlist) {
-		printf("Wordlist path not provided\n");
-		return NULL;
-	}
-	FILE *wordlist_p = fopen(wordlist, "r");
-	if (!wordlist_p) {
-		printf("Failed to open file\n");
-		return NULL;
-	}
-
-	char *line;
-	while ((line = readline_file(wordlist_p)) != NULL) {
-		line[strlen(line)] = '\0';
-		data->key = line;
-		char *plaintext = beaufort_decode(data);
-		if (plaintext)
-			printf("Cipherkey %s: %s\n", line, plaintext);
-		free(plaintext);
-		free(line);
-	}
-
-	fclose(wordlist_p);
-	return NULL;
-}

@@ -1,6 +1,6 @@
+#include "../types.h"
+#include "../util.h"
 #include "ciphers.h"
-#include "types.h"
-#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +15,7 @@ char *railfence_encode(cipher_data *data) {
 
 	int railc = atoi(data->key);
 	if (railc <= 1) {
-		printf("Rail count must at least be 2\n");
+		fprintf(stderr, "Rail count must at least be 2\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -65,7 +65,7 @@ char *railfence_decode(cipher_data *data) {
 
 	int railc = atoi(data->key);
 	if (railc <= 1) {
-		printf("Rail count must at least be 2\n");
+		fprintf(stderr, "Rail count must at least be 2\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -91,7 +91,7 @@ char *railfence_decode(cipher_data *data) {
 
 	if (verbose) {
 		for (int i = 0; i < railc; i++) {
-			printf("Rail %d character count: %d\n", i, railchc[i]);
+			fprintf(stderr, "Rail %d character count: %d\n", i, railchc[i]);
 		}
 	}
 
@@ -124,24 +124,4 @@ char *railfence_decode(cipher_data *data) {
 	free(ciphertext);
 
 	return plaintext;
-}
-
-char *railfence_crack(cipher_data *data) {
-	int len = strlen(data->input);
-	int digitc = count_digits(len);
-
-	data->key = calloc(1, digitc + 1);
-
-	for (int i = 2; i <= len; i++) {
-		snprintf(data->key, digitc + 1, "%d", i);
-
-		char *buffer = railfence_decode(data);
-
-		printf("%-*d Rail: %s\n", digitc, i, buffer);
-
-		free(buffer);
-	}
-
-	free(data->key);
-	return NULL;
 }

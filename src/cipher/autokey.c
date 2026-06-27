@@ -1,5 +1,5 @@
+#include "../util.h"
 #include "ciphers.h"
-#include "util.h"
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
@@ -12,7 +12,7 @@ char *autokey_encode(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 	int plainlen = strlen(buffer);
@@ -51,7 +51,7 @@ char *autokey_decode(cipher_data *data) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate key\n");
+		fprintf(stderr, "Failed to allocate key\n");
 		return NULL;
 	}
 
@@ -63,7 +63,7 @@ char *autokey_decode(cipher_data *data) {
 	int chunk_size = keylen + 1;
 	char **chunk = split_chunk(buffer, chunk_size, chunkc);
 	if (chunk == NULL) {
-		printf("Failed to allocate chunks\n");
+		fprintf(stderr, "Failed to allocate chunks\n");
 		free(buffer);
 		return NULL;
 	}
@@ -92,31 +92,4 @@ char *autokey_decode(cipher_data *data) {
 		free(chunk[i]);
 	free(chunk);
 	return buffer;
-}
-
-char *autokey_crack(cipher_data *data) {
-	char *wordlist = data->crack_parameter[0];
-	if (!wordlist) {
-		printf("Wordlist path not provided\n");
-		return NULL;
-	}
-	FILE *wordlist_p = fopen(wordlist, "r");
-	if (!wordlist_p) {
-		printf("Failed to open file\n");
-		return NULL;
-	}
-
-	char *line;
-	while ((line = readline_file(wordlist_p)) != NULL) {
-		line[strlen(line)] = '\0';
-		data->key = line;
-		char *plaintext = autokey_decode(data);
-		if (plaintext)
-			printf("Cipherkey %s: %s\n", line, plaintext);
-		free(plaintext);
-		free(line);
-	}
-
-	fclose(wordlist_p);
-	return NULL;
 }

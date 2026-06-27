@@ -1,4 +1,5 @@
-#include "ciphers.h"
+#include "cipher/ciphers.h"
+#include "crack_param.h"
 #include "types.h"
 #include <ctype.h>
 #include <stdio.h>
@@ -22,8 +23,7 @@ int main(int argc, char **argv) {
 	char *cipher;
 	char *buffer;
 
-	char **parameter = NULL;
-	int parameterp = 0;
+	crack_param crack_parameter = {0};
 
 	while ((opt = getopt(argc, argv, "c:k:dvlCp:h")) != -1) {
 		switch (opt) {
@@ -55,15 +55,7 @@ int main(int argc, char **argv) {
 			break;
 		}
 		case 'p': {
-			if (!parameter) {
-				parameter = malloc(PARAMETER_ARRAY_SIZE * sizeof(char *));
-				if (!parameter) {
-					printf("Failed to allocate for parameter\n");
-					exit(EXIT_FAILURE);
-				}
-			}
-			parameter[parameterp] = strdup(optarg);
-			parameterp++;
+			parse_crack_param(&crack_parameter, optarg);
 			break;
 		}
 		case 'h': {
@@ -110,7 +102,7 @@ int main(int argc, char **argv) {
 	cipher_data data = {
 		.input = input,
 		.key = key,
-		.crack_parameter = parameter,
+		.crack_parameter = &crack_parameter,
 		.verbose = verbose,
 	};
 
@@ -121,7 +113,7 @@ int main(int argc, char **argv) {
 
 		if (entry) {
 			if ((entry->require_key && !data.key) && !crack) {
-				printf("Key is required\n");
+				fprintf(stderr, "Key is required\n");
 			} else {
 				if (decode) {
 					buffer = entry->decode(&data);
@@ -129,19 +121,20 @@ int main(int argc, char **argv) {
 					if (entry->crack) {
 						buffer = entry->crack(&data);
 					} else {
-						printf("Cracking for %s is not supported\n", cipher);
+						fprintf(stderr, "Cracking for %s is not supported\n",
+								cipher);
 					}
 				} else
 					buffer = entry->encode(&data);
 			}
 		} else if (!entry) {
-			printf("Cipher %s not found\n", cipher);
+			fprintf(stderr, "Cipher %s not found\n", cipher);
 		}
 	} else {
 		if (decode || crack)
-			printf("No ciphertext were given\n");
+			fprintf(stderr, "No ciphertext were given\n");
 		else
-			printf("No plaintext were given\n");
+			fprintf(stderr, "No plaintext were given\n");
 	}
 
 	if (buffer) {
@@ -152,10 +145,8 @@ int main(int argc, char **argv) {
 	free(cipher);
 	free(input);
 
-	for (int i = 0; i < parameterp; i++) {
-		free(parameter[i]);
-	}
-	free(parameter);
+	if (crack_parameter.wordlist)
+		free(crack_parameter.wordlist);
 	return 0;
 }
 

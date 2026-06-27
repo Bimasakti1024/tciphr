@@ -1,6 +1,6 @@
+#include "../types.h"
+#include "../util.h"
 #include "ciphers.h"
-#include "types.h"
-#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +11,7 @@ char *caesar_shift(cipher_data *data, int shift) {
 	verbose = data->verbose;
 	char *buffer = strdup(data->input);
 	if (!buffer) {
-		printf("Failed to allocate buffer\n");
+		fprintf(stderr, "Failed to allocate buffer\n");
 		return NULL;
 	}
 	for (int i = 0; data->input[i] != '\0'; i++) {
@@ -28,13 +28,4 @@ char *caesar_encode(cipher_data *data) {
 }
 char *caesar_decode(cipher_data *data) {
 	return caesar_shift(data, -atoi(data->key));
-}
-
-char *caesar_crack(cipher_data *data) {
-	for (int i = 0; i <= 25; i++) {
-		char *output = caesar_shift(data, -i);
-		printf("Shift %2d: %-s\n", i, output);
-		free(output);
-	}
-	return NULL;
 }

@@ -10,8 +10,36 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
-file(GLOB_RECURSE SOURCES "src/*.c")
-add_executable(tciphr ${SOURCES})
+add_executable(tciphr
+    src/main.c
+
+    src/util.c
+    src/crack_param.c
+    src/cipher/ciphers.c
+    src/kasiski.c
+    src/frequency.c
+
+    # Monoalphabetic substitution cipher
+    src/cipher/caesar.c
+    src/cipher/atbash.c
+    src/cipher/rot13.c
+
+    # Polyalphabetic substitution cipher
+    src/cipher/vigenere.c
+    src/cipher/autokey.c
+    src/cipher/beaufort.c
+
+    # Transposition cipher
+    src/cipher/railfence.c
+
+    # Cracker
+    src/cracker/autokey_cracker.c
+    src/cracker/vigenere_cracker.c
+    src/cracker/beaufort_cracker.c
+    src/cracker/railfence_cracker.c
+    src/cracker/caesar_cracker.c
+)
+target_include_directories(tciphr PRIVATE src)
 
 target_compile_options(tciphr PRIVATE -Wall -Wextra)
 

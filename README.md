@@ -51,9 +51,9 @@ llg hybuo dispf jqo nnetu fzxj e nrdr vsi
 $
 ```
 
-That example show a usage of tciphr to encode the text "the quick brown fox jumps over a lazy dog" using vigenere cipher with the key "secret".
+This example shows a usage of tciphr to encode the text "the quick brown fox jumps over a lazy dog" using vigenere cipher with the key "secret".
 
-You can also use another cipher, Like railfence cipher:
+You can also use another cipher, like railfence cipher:
 
 ```bash
 $ echo "the quick brown fox jumps over a lazy dog" | tciphr -c railfence -k 3
@@ -69,32 +69,57 @@ the quick brown fox jumps over a lazy dog
 $
 ```
 
-This example show how to work with files:
+This example shows how to work with files:
 
 ```bash
 $ cat message.txt | tciphr -c rot13 > encoded.txt
 ```
 
-Vigenere cipher and also with some other cipher can be broken by dictionary attack like this:
+Vigenere cipher and some others can be broken by dictionary attack like this:
 ```bash
-$ echo "bsog{fkewvr_pqyawozinf_otfiyr}" | tciphr -Cc vigenere -p wordlist.txt | grep flag
+$ echo "bsog{fkewvr_pqyawozinf_otfiyr}" | ./tciphr -Cc vigenere -p strategy=dictionary,wordlist=wordlist.txt
+Cipherkey hello: uodv{rdalkd_imnpihvxcr_hpuxkk}
+Cipherkey fox: werb{rnziym_bttmzjllir_rorltd}
+Cipherkey password: mswo{jwntgr_xycmflkivn_sfofjr}
 Cipherkey whoami: flag{tciphr_dictionary_attack}
+Cipherkey onetwothree: nfkn{jwlpen_lclwdslpgo_kprvuy}
 $
 ```
 
-The ciphertext "bsog{fkewvr_pqyawozinf_otfiyr}" are decoded using every cipherkey in `wordlist.txt`, The correct plaintext also have a recognizeable pattern ("flag") which the output can be piped to other tools like `grep`.
+The ciphertext "bsog{fkewvr_pqyawozinf_otfiyr}" is decoded using every cipherkey in `wordlist.txt`, The correct plaintext also has a recognizable pattern ("flag") which the output can be piped to other tools like `grep`.
+
+Vigenere cipher supports two strategies of cracking it: Dictionary and Kasiski (frequency analysis). This is an example of how to use kasiski strategy to crack vigenere cipher:
+```bash
+$  cat cap_excerpt.txt | tciphr -c vigenere -k hello | tciphr -Cc vigenere -p strategy=kasiski,gram=3
+Predicted key length: 5
+Index of coincidence: 0.035894
+Best letter frequency: 11 (l)
+Possible column 0 key: h
+Best letter frequency: 8 (i)
+Possible column 1 key: e
+Best letter frequency: 15 (p)
+Possible column 2 key: l
+Best letter frequency: 15 (p)
+Possible column 3 key: l
+Best letter frequency: 18 (s)
+Possible column 4 key: o
+Possible key: hello
+$ 
+```
+
+This example works by first piping the file `cap_excerpt.txt` to tciphr for encoding using vigenere cipher, then piping the output back into tciphr to crack it using kasiski strategy (frequency analysis), which successfully recovers the key.
 
 ### Supported ciphers
 
-| Cipher    | Category                    | Key requirement     | Cracking mode |
-| :----------| :----------------------------| :--------------------| ---------------|
-| caesar    | Monoalphabetic Substitution | Integer             | Brute force   |
-| rot13     | Monoalphabetic Substitution | None                | -             |
-| atbash    | Monoalphabetic Substitution | None                | -             |
-| autokey   | Polyalphabetic Substitution | String              | Dictionary    |
-| vigenere  | Polyalphabetic Substitution | String              | Dictionary    |
-| beaufort  | Polyalphabetic Substitution | String              | Dictionary    |
-| railfence | Transposition               | Integer (must >= 2) | Brute force   |
+| Cipher    | Category                    | Key requirement     | Cracking mode                            |
+| :----------| :----------------------------| :--------------------| ------------------------------------------|
+| caesar    | Monoalphabetic Substitution | Integer             | Brute force                              |
+| rot13     | Monoalphabetic Substitution | None                | -                                        |
+| atbash    | Monoalphabetic Substitution | None                | -                                        |
+| autokey   | Polyalphabetic Substitution | String              | Dictionary                               |
+| vigenere  | Polyalphabetic Substitution | String              | Dictionary, Frequency Analysis (Kasiski) |
+| beaufort  | Polyalphabetic Substitution | String              | Dictionary                               |
+| railfence | Transposition               | Integer (must >= 2) | Brute force                              |
 
 ## Features
 

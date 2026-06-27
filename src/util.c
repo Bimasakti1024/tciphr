@@ -23,6 +23,19 @@ int search_non_alpha(const char *str) {
 	return c;
 }
 
+char *strip_non_alpha(const char *str) {
+	int p = 0;
+	char *s = strdup(str);
+	memset(s, 0, strlen(s));
+
+	for (int i = 0; i < strlen(str); i++) {
+		if (isalpha(str[i])) {
+			s[p++] = str[i];
+		}
+	}
+	return s;
+}
+
 char *repeated_char(char c, int l) {
 	if (l <= 0)
 		return strdup("");
@@ -102,11 +115,20 @@ char *readline_file(FILE *f) {
 		buf[len++] = c;
 	}
 
-	if (len == 0 || c == EOF) {
+	if (len == 0 && c == EOF) {
 		free(buf);
 		return NULL;
 	}
 
 	buf[len] = '\0';
 	return buf;
+}
+
+int gcd(int a, int b) {
+	while (b != 0) {
+		int t = b;
+		b = a % b;
+		a = t;
+	}
+	return a;
 }
