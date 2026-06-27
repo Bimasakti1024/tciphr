@@ -117,8 +117,8 @@ char *vigenere_kasiski(cipher_data *data) {
 	printf("Index of coincidence: %f\n", index_of_coincidence(data->input));
 
 	// Chunk ciphertext per predicted_keylen-th letter
-	char column[(int)ceil((float)cleanlen / predicted_keylen)]
-			   [predicted_keylen];
+	int column_size = ceil((float)cleanlen / predicted_keylen);
+	char column[predicted_keylen][column_size + 1];
 
 	for (int col = 0; col < predicted_keylen; col++) {
 		int idx = 0;
@@ -128,6 +128,8 @@ char *vigenere_kasiski(cipher_data *data) {
 		column[col][idx] = '\0';
 		DBG_OUT("Chunk %d: %s\n", col, column[col])
 	}
+
+	int column_freq[predicted_keylen][26];
 
 	free(kp);
 	free(cleaned);
