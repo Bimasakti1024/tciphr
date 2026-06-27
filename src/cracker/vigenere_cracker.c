@@ -130,8 +130,34 @@ char *vigenere_kasiski(cipher_data *data) {
 		column[col][idx] = '\0';
 
 		count_frequency(column[col], column_freq[col]);
-		DBG_OUT("Chunk %d: %s\n", col, column[col])
+		DBG_OUT("Column %d: %s\n", col, column[col])
 	}
+
+	char key[predicted_keylen + 1];
+	memset(key, 0, sizeof(key));
+	for (int i = 0; i < predicted_keylen; i++) {
+		if (verbose) {
+			printf("Column %d frequency: ", i);
+			for (int j = 0; j < 26; j++) {
+				printf("%c: %d ", 'a' + j, column_freq[i][j]);
+			}
+			printf("\n");
+		}
+
+		int best_letter = 0;
+		for (int j = 1; j < 26; j++) {
+			if (column_freq[i][j] > column_freq[i][best_letter])
+				best_letter = j;
+		}
+		printf("Best letter frequency: %d (%c)\n", best_letter,
+			   'a' + best_letter);
+		int shift = (best_letter - ('e' - 'a') + 26) % 26;
+		char letter = 'a' + shift;
+		key[i] = letter;
+		printf("Possible column %d key: %c\n", i, letter);
+	}
+
+	printf("Possible key: %s\n", key);
 
 	free(kp);
 	free(cleaned);
