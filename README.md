@@ -2,6 +2,14 @@
 
 `tciphr` is a lightweight command-line interface to process text using historical cryptographic algorithms. It allows people like CTF player to process text through classic ciphers right from the terminal.
 
+## Features
+
+- **Lightweight and fast:** Written in pure C with zero external dependencies.
+- **Stream-oriented design:** Reads from `stdin` with no interactive prompts, allowing seamless integration with other tools like `grep` or `awk`.
+- **Dictionary attack** for Vigenere, Autokey, and Beaufort ciphers.
+- **Kasiski examination** with frequency analysis for Vigenere cipher cracking.
+- **Brute force attack** for Caesar and Railfence ciphers.
+
 ## Security Notice
 This tool implements historical cryptographic algorithms which does not adhere to modern security standards.
 
@@ -121,14 +129,10 @@ This example works by first piping the file `cap_excerpt.txt` to tciphr for enco
 | beaufort  | Polyalphabetic Substitution | String              | Dictionary                               |
 | railfence | Transposition               | Integer (must >= 2) | Brute force                              |
 
-## Features
+## Changelog
 
-- Lightweight and Fast: Written in Pure C with zero external heavy dependencies.
-- Stream-oriented design: Read from `stdin` with zero interactive prompt, Allowing seamless integration with other tools like `grep` or `awk`.
-- Case-insensitive cipher names: Parameters like `-c Caesar` and `-c caesar` are processed identically.
-- Dictionary attack for Autokey, Vigenere, and Beaufort cipher.
-- Brute force attack for railfence and caesar cipher.
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-MIT
+This project is licensed under the [MIT License](LICENSE).
