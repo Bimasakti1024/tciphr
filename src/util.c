@@ -115,7 +115,7 @@ char *readline_file(FILE *f) {
 		buf[len++] = c;
 	}
 
-	if (len == 0 || c == EOF) {
+	if (len == 0 && c == EOF) {
 		free(buf);
 		return NULL;
 	}

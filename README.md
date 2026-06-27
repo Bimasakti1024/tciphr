@@ -73,7 +73,10 @@ $ cat message.txt | tciphr -c rot13 > encoded.txt
 
 Vigenere cipher and also with some other cipher can be broken by dictionary attack like this:
 ```bash
-$ echo "bsog{fkewvr_pqyawozinf_otfiyr}" | tciphr -Cc vigenere -p wordlist.txt | grep flag
+$ echo "bsog{fkewvr_pqyawozinf_otfiyr}" | ./tciphr -Cc vigenere -p strategy=dictionary,wordlist=wordlist.txt
+Cipherkey hello: uodv{rdalkd_imnpihvxcr_hpuxkk}
+Cipherkey fox: werb{rnziym_bttmzjllir_rorltd}
+Cipherkey password: mswo{jwntgr_xycmflkivn_sfofjr}
 Cipherkey whoami: flag{tciphr_dictionary_attack}
 $
 ```
@@ -82,15 +85,15 @@ The ciphertext "bsog{fkewvr_pqyawozinf_otfiyr}" are decoded using every cipherke
 
 ### Supported ciphers
 
-| Cipher    | Category                    | Key requirement     | Cracking mode |
-| :----------| :----------------------------| :--------------------| ---------------|
-| caesar    | Monoalphabetic Substitution | Integer             | Brute force   |
-| rot13     | Monoalphabetic Substitution | None                | -             |
-| atbash    | Monoalphabetic Substitution | None                | -             |
-| autokey   | Polyalphabetic Substitution | String              | Dictionary    |
-| vigenere  | Polyalphabetic Substitution | String              | Dictionary    |
-| beaufort  | Polyalphabetic Substitution | String              | Dictionary    |
-| railfence | Transposition               | Integer (must >= 2) | Brute force   |
+| Cipher    | Category                    | Key requirement     | Cracking mode                            |
+| :----------| :----------------------------| :--------------------| ------------------------------------------|
+| caesar    | Monoalphabetic Substitution | Integer             | Brute force                              |
+| rot13     | Monoalphabetic Substitution | None                | -                                        |
+| atbash    | Monoalphabetic Substitution | None                | -                                        |
+| autokey   | Polyalphabetic Substitution | String              | Dictionary                               |
+| vigenere  | Polyalphabetic Substitution | String              | Dictionary, Frequency Analysis (Kasiski) |
+| beaufort  | Polyalphabetic Substitution | String              | Dictionary                               |
+| railfence | Transposition               | Integer (must >= 2) | Brute force                              |
 
 ## Features
 
