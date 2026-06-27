@@ -84,6 +84,7 @@ $ cat message.txt | tciphr -c rot13 > encoded.txt
 ```
 
 Vigenere cipher and some others can be broken by dictionary attack like this:
+
 ```bash
 $ echo "bsog{fkewvr_pqyawozinf_otfiyr}" | ./tciphr -Cc vigenere -p strategy=dictionary,wordlist=wordlist.txt
 Cipherkey hello: uodv{rdalkd_imnpihvxcr_hpuxkk}
@@ -97,8 +98,9 @@ $
 The ciphertext "bsog{fkewvr_pqyawozinf_otfiyr}" is decoded using every cipherkey in `wordlist.txt`, The correct plaintext also has a recognizable pattern ("flag") which the output can be piped to other tools like `grep`.
 
 Vigenere cipher supports two strategies of cracking it: Dictionary and Kasiski (frequency analysis). This is an example of how to use kasiski strategy to crack vigenere cipher:
+
 ```bash
-$  cat cap_excerpt.txt | tciphr -c vigenere -k hello | tciphr -Cc vigenere -p strategy=kasiski,gram=3
+$ cat cap_excerpt.txt | tciphr -c vigenere -k hello | tciphr -Cc vigenere -p strategy=kasiski,gram=3
 Predicted key length: 5
 Index of coincidence: 0.035894
 Best letter frequency: 11 (l)
