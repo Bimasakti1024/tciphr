@@ -3,6 +3,7 @@
 #include "../kasiski.h"
 #include "../types.h"
 #include "../util.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +59,9 @@ char *vigenere_dictionary(cipher_data *data) {
 }
 
 char *vigenere_kasiski(cipher_data *data) {
-	int max_key_len = strlen(data->input) / 3;
+	char *cleaned = strip_non_alpha(data->input);
+	int cleanlen = strlen(cleaned);
+	int max_key_len = strlen(cleaned) / 3;
 	if (max_key_len > 30)
 		max_key_len = 30;
 
@@ -67,7 +70,7 @@ char *vigenere_kasiski(cipher_data *data) {
 
 	// Find kasiski pattern
 	kasiski_pattern **kp =
-		find_kasiski_pattern(data->input, data->crack_parameter->gram);
+		find_kasiski_pattern(cleaned, data->crack_parameter->gram);
 
 	for (int i = 0; kp[i] != NULL; i++) {
 		// Skip pattern that dont appear more than 2 times
@@ -99,18 +102,34 @@ char *vigenere_kasiski(cipher_data *data) {
 		free_kasiski_pattern(kp[i]);
 	}
 
-	int factor_index = 2;
-	int factor_max = 0;
+	// Factor voting
+	int predicted_keylen = 2;
+	int best_factor_max = 0;
 
 	for (int i = 2; i <= max_key_len; i++) {
-		if (factor[i] > factor_max) {
-			factor_max = factor[i];
-			factor_index = i;
+		if (factor[i] > best_factor_max) {
+			best_factor_max = factor[i];
+			predicted_keylen = i;
 		}
 	}
 
-	printf("Predicted key length: %d\n", factor_index);
+	printf("Predicted key length: %d\n", predicted_keylen);
 	printf("Index of coincidence: %f\n", index_of_coincidence(data->input));
+
+	// Chunk ciphertext per predicted_keylen-th letter
+	char column[(int)ceil((float)cleanlen / predicted_keylen)]
+			   [predicted_keylen];
+
+	for (int col = 0; col < predicted_keylen; col++) {
+		int idx = 0;
+		for (int i = col; i < cleanlen; i += predicted_keylen) {
+			column[col][idx++] = cleaned[i];
+		}
+		column[col][idx] = '\0';
+		DBG_OUT("Chunk %d: %s\n", col, column[col])
+	}
+
 	free(kp);
+	free(cleaned);
 	return NULL;
 }
