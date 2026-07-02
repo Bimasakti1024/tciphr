@@ -120,7 +120,7 @@ This example works by first piping the file `cap_excerpt.txt` to tciphr for enco
 | atbash    | Monoalphabetic Substitution | None                | -                                        |
 | autokey   | Polyalphabetic Substitution | String              | Dictionary                               |
 | vigenere  | Polyalphabetic Substitution | String              | Dictionary, Frequency Analysis (Kasiski) |
-| beaufort  | Polyalphabetic Substitution | String              | Dictionary                               |
+| beaufort  | Polyalphabetic Substitution | String              | Dictionary, Frequency Analysis (Kasiski)                               |
 | railfence | Transposition               | Integer (must >= 2) | Brute force                              |
 
 ## Features
