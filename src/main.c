@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	int crack = 0;
 
 	char *cipher;
-	char *buffer;
+	char *buffer = NULL;
 
 	crack_param crack_parameter = {0};
 
