@@ -27,6 +27,7 @@ char *beaufort(cipher_data *data) {
 	for (int i = 0; data->input[i] != '\0'; i++) {
 		char c = data->input[i];
 		if (isalpha(c)) {
+			c = tolower(c);
 			char p = c - 'a';
 			int k = tolower(data->key[WRAP(key_pos, key_len)]) - 'a';
 
