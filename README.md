@@ -3,6 +3,7 @@
 `tciphr` is a lightweight command-line interface to process text using historical cryptographic algorithms. It allows people like CTF player to process text through classic ciphers right from the terminal.
 
 ## Security Notice
+
 This tool implements historical cryptographic algorithms which does not adhere to modern security standards.
 
 ## Installation
@@ -22,7 +23,9 @@ cmake --build build
 
 ## Usage
 
-> tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]
+```bash
+tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]
+```
 
 | Flag        | Description        |
 | -------------| --------------------|
@@ -69,9 +72,11 @@ This example shows how to work with files:
 
 ```bash
 $ cat message.txt | tciphr -c rot13 > encoded.txt
+$
 ```
 
 Vigenere cipher and some others can be broken by dictionary attack like this:
+
 ```bash
 $ echo "bsog{fkewvr_pqyawozinf_otfiyr}" | ./tciphr -Cc vigenere -p strategy=dictionary,wordlist=wordlist.txt
 Cipherkey hello: uodv{rdalkd_imnpihvxcr_hpuxkk}
@@ -85,6 +90,7 @@ $
 The ciphertext "bsog{fkewvr_pqyawozinf_otfiyr}" is decoded using every cipherkey in `wordlist.txt`, The correct plaintext also has a recognizable pattern ("flag") which the output can be piped to other tools like `grep`.
 
 Vigenere cipher supports two strategies of cracking it: Dictionary and Kasiski (frequency analysis). This is an example of how to use kasiski strategy to crack vigenere cipher:
+
 ```bash
 $  cat cap_excerpt.txt | tciphr -c vigenere -k hello | tciphr -Cc vigenere -p strategy=kasiski,gram=3
 Predicted key length: 5
