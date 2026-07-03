@@ -2,7 +2,7 @@
 
 All notable changelog are documented in this file.
 
-## [UNRELEASED]
+## [1.1.0] - 03-07-2026
 
 ### Added
 
@@ -10,6 +10,7 @@ All notable changelog are documented in this file.
 
 ### Fixed
 
+- Beaufort cipher not normalizing characters to lowercase before shifting that causes incorrect output for uppercase input letter
 - SEGV on output buffer in main.c when did not process any plaintext or ciphertext
 
 ## [1.0.0] - 27-06-2026
