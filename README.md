@@ -11,6 +11,7 @@
 - **Brute force attack** for Caesar and Railfence ciphers.
 
 ## Security Notice
+
 This tool implements historical cryptographic algorithms which does not adhere to modern security standards.
 
 ## Installation
@@ -30,11 +31,9 @@ cmake --build build
 
 ## Usage
 
-```
+```bash
 tciphr -c <cipher> [-k <key>] [-d] [-C] [-v] [-l] [-p] [-h]
 ```
-
-### Flags
 
 | Flag        | Description        |
 | -------------| --------------------|
@@ -81,6 +80,7 @@ This example shows how to work with files:
 
 ```bash
 $ cat message.txt | tciphr -c rot13 > encoded.txt
+$
 ```
 
 Vigenere cipher and some others can be broken by dictionary attack like this:
@@ -128,7 +128,7 @@ This example works by first piping the file `cap_excerpt.txt` to tciphr for enco
 | atbash    | Monoalphabetic Substitution | None                | -                                        |
 | autokey   | Polyalphabetic Substitution | String              | Dictionary                               |
 | vigenere  | Polyalphabetic Substitution | String              | Dictionary, Frequency Analysis (Kasiski) |
-| beaufort  | Polyalphabetic Substitution | String              | Dictionary                               |
+| beaufort  | Polyalphabetic Substitution | String              | Dictionary, Frequency Analysis (Kasiski)                               |
 | railfence | Transposition               | Integer (must >= 2) | Brute force                              |
 
 ## Changelog
